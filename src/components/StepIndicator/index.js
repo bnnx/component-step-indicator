@@ -1,15 +1,25 @@
-import * as React from 'react';
+import React from 'react';
 import { Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 import { styles } from './styles';
 
 export default function StepIndicator({
   totalSteps,
   currentStep,
-  //color,
-  //style
+  color,
+  checkedColor,
+  size,
+  fontFamily,
+  fontSize,
+  currentTextColor,
+  borderWidthNext
 }) {
 
   function RenderStepIndicator(props){
@@ -17,25 +27,23 @@ export default function StepIndicator({
     const current = props.current;
     let count = props.count;
 
-    // 'while' no lugar de 'for' já que não é possível usar o increment do mesmo aqui dentro
-
     while (count <= total) {
       return (
         count < current 
           ? (
-            <View style={styles.checkButton}>
-              <Icon name="check-circle" size={28} color='#70BF60' style={{alignSelf: 'center'}} />
+            <View style={styles.button}>
+              <Icon name="check-circle" size={size + wp(1)} color={checkedColor} style={{alignSelf: 'center'}} />
             </View>
             )
           : count == current
               ? (
-                <View style={styles.onPageButton}>
-                  <Text style={styles.onPageButtonText}>{count}</Text>
+                <View style={[styles.button, { backgroundColor: color, width: size, height: size, borderRadius: size/2 }]}>
+                  <Text style={{ color: currentTextColor, fontSize: fontSize, fontFamily: fontFamily }}>{count}</Text>
                 </View>
                 )
               : (
-                <View style={[styles.nextPageButton]}>
-                  <Text style={styles.nextPageButtonText}>{count}</Text>
+                <View style={[styles.button, { borderWidth: borderWidthNext, borderColor: color, width: size, height: size, borderRadius: size/2 }]}>
+                  <Text style={{ color: color, fontSize: fontSize, fontFamily: fontFamily }}>{count}</Text>
                 </View>
                 )
       );
@@ -52,18 +60,25 @@ export default function StepIndicator({
   );
 }
 
-// validação das props
 StepIndicator.prototype = {
   totalSteps: PropTypes.number.isRequired,
   currentStep: PropTypes.number.isRequired,
-  //style: PropTypes.oneOfType([PropTypes.object, PropTypes.array]), //style OU é um objeto OU um array com vários objetos
-  //color: PropTypes.string.isRequired,
+  color: PropTypes.string,
+  checkedColor: PropTypes.string,
+  size: PropTypes.number,
+  fontFamily: PropTypes.string,
+  fontSize: PropTypes.number,
+  currentTextColor: PropTypes.string,
+  borderWidthNext: PropTypes.number,
 };
 
-StepIndicator.prototype = {
-  // declaro o que não é obrigatório
-  //color: '',
-  //style: {},
+StepIndicator.defaultProps = {
+  color: '#FF9057',
+  checkedColor: '#70BF60',
+  size: wp(5.8),
+  fontSize: wp(3.4),
+  currentTextColor: '#FFF',
+  borderWidthNext: wp(0.5)
 };
 
 

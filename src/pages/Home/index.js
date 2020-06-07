@@ -6,7 +6,7 @@ import StepIndicator from '../../components/StepIndicator';
 export default function Home() {
   return (
     <View style={styles.container}>
-      <Text>Component Step Indicator</Text>
+      <Text>Step Indicator</Text>
       <StepIndicator totalSteps={5} currentStep={3}/>
     </View>
   )
